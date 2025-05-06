@@ -140,5 +140,5 @@ def show():
     st.subheader("Total Monthly Savings")
     st.markdown(f"<h1 style='text-align: center; color: green;'>₹{savings:.2f}</h1>", unsafe_allow_html=True)
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     show()
