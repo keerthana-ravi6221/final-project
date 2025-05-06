@@ -3,9 +3,6 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import altair as alt
 
-def show():
-    st.header("Cost Analysis Dashboard")
-    # Paste your cost analysis dashboard code here
 # TNERC Tariff rates based on July 2024 order
 electricity_cost_per_kwh = {
     "Industries": 7.25,
@@ -83,38 +80,35 @@ def calculate_savings(units_used, solar_generation, wind_generation, category):
     cost_with_solar_wind = calculate_cost(category, net_consumption)
     return cost_without_solar_wind - cost_with_solar_wind
 
-
-
-def main():
+def show():
     """
-    Main function to run the energy savings calculator using Streamlit.
+    Main function to run the energy savings calculator within the Streamlit app.
     """
-    st.title("Energy Savings Calculator")
+    st.header("Electricity Cost and Savings Calculator")
 
     # User Inputs
-    st.header("Electricity Consumption Details")
+    st.subheader("Electricity Consumption Details")
     category = st.selectbox("Select Consumer Category:", list(electricity_cost_per_kwh.keys()))
     units_used = st.number_input("Enter your monthly electricity consumption (kW):", min_value=0)
 
-    st.header("Solar System Details")
+    st.subheader("Solar System Details")
     solar_size_kw = st.number_input("Enter your solar system size (kW):", min_value=0.0)
     solar_generation_per_day = solar_size_kw * 4.5  # Assuming 4.5 hours of sunlight per day
     solar_generation_per_month = solar_generation_per_day * 30
     st.write(f"Estimated monthly solar generation: {solar_generation_per_month:.2f} kW")
 
-    st.header("Wind Energy Details")
+    st.subheader("Wind Energy Details")
     wind_turbine_kw = st.number_input("Enter your wind turbine capacity (kW):", min_value=0.0)
     average_wind_speed = st.slider("Enter average wind speed (m/s):", min_value=0, max_value=25, value=10)
     # Simplified wind power calculation
     wind_generation_per_month = 0.5 * 1.225 * (average_wind_speed ** 3) * (wind_turbine_kw/1000) * 24 * 30
-
     st.write(f"Estimated monthly wind generation: {wind_generation_per_month:.2f} kW")
 
     # Calculate Savings
     savings = calculate_savings(units_used, solar_generation_per_month, wind_generation_per_month, category)
 
     # Display Results
-    st.header("Results")
+    st.subheader("Results")
     st.write(f"Total Monthly Consumption: {units_used} kW")
     cost_without_solar_wind = calculate_cost(category, units_used)
     st.write(f"Cost without Solar and Wind: ₹{cost_without_solar_wind:.2f}")
@@ -123,7 +117,7 @@ def main():
     st.write(f"Savings: ₹{savings:.2f}")
 
     # Visualization
-    st.header("Cost and Savings Visualization")
+    st.subheader("Cost and Savings Visualization")
 
     # Create a DataFrame for plotting
     plot_data = pd.DataFrame({
@@ -143,10 +137,8 @@ def main():
     st.altair_chart(chart, use_container_width=True)  # Make chart responsive
 
     # Display savings as a single number
-    st.subheader("Total Savings")
+    st.subheader("Total Monthly Savings")
     st.markdown(f"<h1 style='text-align: center; color: green;'>₹{savings:.2f}</h1>", unsafe_allow_html=True)
 
-
-
-if __name__ == "__main__":
-    main()
+if _name_ == "_main_":
+    show()
